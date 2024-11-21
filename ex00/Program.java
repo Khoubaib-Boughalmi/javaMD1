@@ -1,5 +1,5 @@
 public class Program {
-    public static int numberCalculator(int nb) {
+    public static int sumDigits(int nb) {
         int sum = 0;
         int count = 0
         while (nb) {
@@ -13,7 +13,7 @@ public class Program {
 
     public static void main (String[] args) {
         int nb = 123;
-        sum = numberCalculator(nb);
+        sum = sumDigits(nb);
         if (sum == -1) return 0;
         system.out.println(sum);
     }
