@@ -1,3 +1,6 @@
+# java class
+*.class
+
 # macOS system files
 .DS_Store
 .AppleDouble
