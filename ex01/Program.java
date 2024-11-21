@@ -1,24 +1,29 @@
+
+import java.util.Scanner;
+
 public class Program {
 
     public static void primeCheck(int nb) {
-        int i = 2;
-        while (i <= nb / 2) {
+        int i;
+        for (i = 2; i * i <= nb; ++i) {
             if (nb % i == 0) {
-                System.out.println("false", i - 1);
-                break;
+                System.out.printf("false %d\n", (i - 1));
+                return;
             }
-            i += 1;
         }
-        System.out.println("true", i - 1);    
+        System.out.printf("true %d\n", (i - 1));
     }
 
     public static void main(String[] args) {
-        int nb = Scanner().Interger.parseInt();
-        if (nb < 2) {
-            System.out.println("IllegalArgument");
-            exit(-1);
-        }
+        try (Scanner scanner = new Scanner(System.in)) {
+            int nb = scanner.nextInt();
+            
+            if (nb < 2) {
+                System.out.println("IllegalArgument");
+                System.exit(-1);
+            }
 
-        primeCheck(nb);
+            primeCheck(nb);
+        }
     }
 }
