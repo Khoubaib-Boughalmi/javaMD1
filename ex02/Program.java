@@ -13,6 +13,7 @@ public class Program {
     }
 
     public static boolean isPrime(int nb) {
+        if (nb < 2) return  false;
         int i;
         for (i = 2; i * i <= nb; ++i) {
             if (nb % i == 0) {
@@ -24,15 +25,15 @@ public class Program {
 
     public static void main(String[] args) {
         int count_primes = 0;
-        try(Scanner scanner = new Scanner(System.in)){
-            while (true) {
-                int nb = scanner.nextInt();
-                if (nb == 42) {
-                    System.out.printf("Count of coffee-request: %d\n",  count_primes);
-                    break;
-                }
-                if (isPrime(sumDigits(nb))) count_primes += 1;
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            int nb = scanner.nextInt();
+            if (nb == 42) {
+                System.out.printf("Count of coffee-request : %d\n",  count_primes); //check evaluation for : or -
+                scanner.close();
+                return;
             }
+            if (isPrime(sumDigits(nb))) count_primes += 1;
         }
     }
 }
