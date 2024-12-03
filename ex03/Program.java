@@ -67,6 +67,10 @@ public class Program {
                 for (int j = 0; j < 4; j++) {
                     if (lineScanner.hasNextInt()) {
                         int number = lineScanner.nextInt();
+                        if (number > 9 || number < 1) {
+                            System.err.println("IllegalArgument 5");
+                            System.exit(-1);
+                        }
                         if (number < min) min = number;
                     } else {
                         System.err.println("IllegalArgument 5");
