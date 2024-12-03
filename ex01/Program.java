@@ -1,6 +1,5 @@
-
 import java.util.Scanner;
-
+ 
 public class Program {
 
     public static void primeCheck(int nb) {
