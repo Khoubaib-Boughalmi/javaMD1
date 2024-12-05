@@ -1,3 +1,7 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Scanner;
 /**
  *
@@ -35,24 +39,39 @@ public class Program {
     if (!namesString.isEmpty()) studentsNames[x] = name;
     return studentsNames; 
   }
-
-  public static String [][]createStudentScheduleArray(String scheduleString, int classesCount) {
+public static String[][] createStudentScheduleArray(String scheduleString, int classesCount) {
     String[][] studentsSchedule = new String[classesCount][2];
     int i = 0;
     int j = 0;
     while (i < scheduleString.length()) {
-      String session = "";
-      String day = "";
-      while (i < scheduleString.length() && scheduleString.charAt(i) != ' ') session += scheduleString.charAt(i++);
-      if (i < scheduleString.length() && scheduleString.charAt(i) == ' ') i++;
-      while (i < scheduleString.length() && scheduleString.charAt(i) != '\n') day += scheduleString.charAt(i++);
-      if (i < scheduleString.length() && scheduleString.charAt(i) == '\n') i++;
-      studentsSchedule[j][0] = session;
-      studentsSchedule[j][1] = day;
-      j++;
+        String session = "";
+        String day = "";
+        while (i < scheduleString.length() && scheduleString.charAt(i) != ' ') session += scheduleString.charAt(i++);
+        if (i < scheduleString.length() && scheduleString.charAt(i) == ' ') i++;
+        while (i < scheduleString.length() && scheduleString.charAt(i) != '\n') day += scheduleString.charAt(i++);
+        if (i < scheduleString.length() && scheduleString.charAt(i) == '\n') i++;
+        studentsSchedule[j][0] = session;
+        studentsSchedule[j][1] = day;
+        j++;
     }
+    
+    // Improved sorting method
+    Arrays.sort(studentsSchedule, new Comparator<String[]>() {
+        @Override
+        public int compare(String[] a, String[] b) {
+            // First, compare by day
+            int dayComparison = a[1].compareTo(b[1]);
+            if (dayComparison != 0) {
+                return dayComparison;
+            }
+            
+            // If days are the same, compare by time
+            return a[0].compareTo(b[0]);
+        }
+    });
+    
     return studentsSchedule;
-  }
+}
 
 
   public static String[][] parseAttendanceRecord(Scanner scanner) {
@@ -101,30 +120,50 @@ public class Program {
   }
 
   public static void displayScheduleAndAttendance(
-      String[] studentsNames, 
-      String[][] studentsSchedule, 
-      String[][] attendanceRecord
-    ) {
-      String []daysOfTheWeek = {"TU", "WE", "TH", "FR", "SA", "SU", "MO"};
-      int daysNumber = 1;
-      while (daysNumber < 31) {
+    String[] studentsNames,
+    String[][] studentsSchedule,
+    String[][] attendanceRecord
+) {
+    String[] daysOfTheWeek = {"TU", "WE", "TH", "FR", "SA", "SU", "MO"};
+    int daysNumber = 1;
+    List<String[]> matchedStudentsSchedule = new ArrayList<>();
+
+    System.out.printf("%11s", "");
+    while (daysNumber < 31) {
         for (int j = 0; j < daysOfTheWeek.length; ++j) {
-          for (int i = 0; i < studentsSchedule.length; ++i) {
-            if (studentsSchedule[i][1].equals(daysOfTheWeek[j])) {
-              System.out.printf("%-9s|", studentsSchedule[i][0] + ":00" + " " + daysOfTheWeek[j] + " " + daysNumber);
+            for (int i = 0; i < studentsSchedule.length; ++i) {
+                if (studentsSchedule[i][1].equals(daysOfTheWeek[j])) {
+                    System.out.printf("%1s:00%3s%3d|", studentsSchedule[i][0], daysOfTheWeek[j], daysNumber);
+                    matchedStudentsSchedule.add(new String[]{studentsSchedule[i][0], String.valueOf(daysNumber)});
+                }
             }
-          }
-          daysNumber++;
-          if (daysNumber > 30) break;
+            daysNumber++;
+            if (daysNumber > 30) break;
         }
-      }
-      System.out.println();
-      for (int i = 0; i < studentsNames.length; ++i) {
-        System.out.printf("%-9s|%n", studentsNames[i]);
+    }
+    System.out.println();
+
+    for (int i = 0; i < studentsNames.length; ++i) {
+        System.out.printf("%-10s|", studentsNames[i]);
         
-      }
-  }
-  
+        for (String[] session : matchedStudentsSchedule) {
+            boolean attended = false;
+            for (String[] attendance : attendanceRecord) {
+                if (studentsNames[i].equals(attendance[0]) && 
+                    session[0].equals(attendance[1]) && 
+                    session[1].equals(attendance[2])) {
+                    System.out.printf("%10s|", attendance[3].equals("HERE")? "1" : "-1");
+                    attended = true;
+                    break;
+                }
+            }
+            if (!attended) {
+                System.out.printf("%10s|", "");
+            }
+        }
+        System.out.println();
+    }
+}
   public static void main(String []args) {
     int i = 1;
     Scanner scanner = new Scanner(System.in);
