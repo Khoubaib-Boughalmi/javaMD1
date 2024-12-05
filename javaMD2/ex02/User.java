@@ -5,6 +5,12 @@ public class User {
   private int     balance     = 0;
   private String  name        = "";
 
+  // public User(User user) {
+  //   this.id = user.id;
+  //   this.name = user.name;
+  //   this.balance = user.balance;
+  // }
+
   public User(String name, int balance) {
     this.id = UserIdsGenerator.getInstance().generateId();
     this.name = name;
