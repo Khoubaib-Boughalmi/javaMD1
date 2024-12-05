@@ -1,3 +1,7 @@
+/**
+ *
+ * @author kboughal
+ */
 import java.util.Scanner;
  
 public class Program {

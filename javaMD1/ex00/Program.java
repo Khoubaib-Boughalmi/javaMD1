@@ -1,3 +1,8 @@
+/**
+ *
+ * @author kboughal
+ */
+
 public class Program {
     public static int sumDigits(int nb) {
         int sum = 0;

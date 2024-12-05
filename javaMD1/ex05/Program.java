@@ -55,17 +55,14 @@ public static String[][] createStudentScheduleArray(String scheduleString, int c
         j++;
     }
     
-    // Improved sorting method
+    // Improved sorting method ===> to be updated
     Arrays.sort(studentsSchedule, new Comparator<String[]>() {
         @Override
         public int compare(String[] a, String[] b) {
-            // First, compare by day
             int dayComparison = a[1].compareTo(b[1]);
             if (dayComparison != 0) {
                 return dayComparison;
             }
-            
-            // If days are the same, compare by time
             return a[0].compareTo(b[0]);
         }
     });
