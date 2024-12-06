@@ -1,30 +1,46 @@
+package  ex00;
 public class User {
-  private int     balance     = 0;
-  private int     identifier  = 0;
-  private String  name        = "";
+  private int identifier;
+  private String name;
+  private double balance;
 
-  public User(int identifier, String name, int balance) {
-    this.identifier = identifier;
-    this.name = name;
-    if (balance < 0) return;
-    this.balance = balance;
+
+  public User(int identifier, String name, double initialBalance) {
+      this.identifier = identifier;
+      setName(name);
+      setBalance(initialBalance);
   }
 
-  public int getBalance() {
-    return this.balance;
-  }
+    public int getIdentifier() {
+      return identifier;
+    }
 
-  public void setBalance(int newBalance) {
-    if (balance < 0) return;
-    this.balance = newBalance;
-  }
+    public String getName() {
+      return name;
+    }
 
-  public String getName() {
-    return this.name;
-  }
+    public void setName(String name) {
+      this.name = name;
+    }
 
-  public int getIdentifier() {
-    return this.identifier;
-  }
+    public double getBalance() {
+      return balance;
+    }
 
+    public void setBalance(double balance) {
+      if (balance < 0) {
+          System.err.println("Initial balance cannot be negative");
+      } else {
+        this.balance = balance;
+      }
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + identifier +
+                ", name='" + name + '\'' +
+                ", balance=" + balance +
+                '}';
+    }
 }

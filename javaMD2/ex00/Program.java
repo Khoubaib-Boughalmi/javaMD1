@@ -1,20 +1,42 @@
-
-import java.util.UUID;
-
+package  ex00;
 public class Program {
+  public static void main(String[] args) {
+      User alice = new User(1, "Alice", 1000.0);
+      User bob = new User(2, "Bob", 500.0);
 
-  public static void main(String []args) {
-    User alice = new User(0, "Alice", 1000);
-    User bob = new User(0, "Bob", 500);
+      System.out.println("Initial User States:");
+      System.out.println(alice);
+      System.out.println(bob);
 
-    Transaction transaction = new Transaction(
-      UUID.randomUUID(),
-      alice,
-      bob,
-      category.CREDITS,
-      800);
+      try {
+          Transaction debitTransaction = new Transaction(
+              alice,   
+              bob,     
+              -200.0, 
+              Transaction.TransactionCategory.DEBIT
+          );
+          
+          // Create a credit transaction (money entering Bob's account)
+          Transaction creditTransaction = new Transaction(
+              bob,   
+              alice,   
+              200.0,
+              Transaction.TransactionCategory.CREDIT
+          );
 
-    System.out.println("Alice's new balance: " + alice.getBalance());
-    System.out.println("Bob's new balance: " + bob.getBalance());
+          debitTransaction.process();
+          creditTransaction.process();
+
+          System.out.println("\nTransaction Details:");
+          System.out.println(debitTransaction);
+          System.out.println(creditTransaction);
+
+          System.out.println("\nUpdated User States:");
+          System.out.println(alice);
+          System.out.println(bob);
+
+      } catch (IllegalArgumentException | IllegalStateException e) {
+          System.out.println("Transaction Error: " + e.getMessage());
+      }
   }
 }
