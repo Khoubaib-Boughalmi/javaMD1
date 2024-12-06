@@ -1,4 +1,4 @@
-package  ex00;
+package ex00;
 import java.util.UUID;
 
 public class Transaction {
@@ -9,46 +9,68 @@ public class Transaction {
     private double amount;
 
     public enum TransactionCategory {
-        DEBIT,   // Money leaving an account (negative amount)
-        CREDIT   // Money entering an account (positive amount)
+        DEBIT,
+        CREDIT
     }
 
-    public Transaction(User sender, User recipient, double amount, TransactionCategory category) {
+    public static Transaction createTransaction(User sender, User recipient, double amount) {
+        try {
+            Transaction transaction = new Transaction(sender, recipient, amount);
+            System.out.println("Transaction succeeded");
+            return transaction;
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+
+    // Constructor with improved validation
+    private Transaction(User sender, User recipient, double amount) {
         this.identifier = UUID.randomUUID().toString();
         this.sender = sender;
         this.recipient = recipient;
-        setCategory(category);
-        setAmount(amount);
+        
+        // Validate transaction amount and set category
+        validateAndSetTransaction(amount);
+        
+        // Process the transaction
+        process();
     }
 
-    public void setCategory(TransactionCategory category) {
-        this.category = category;
-    }
+    // Improved validation method
+    private void validateAndSetTransaction(double amount) {
+        if (amount > 0) {
+            this.category = TransactionCategory.CREDIT;
+        } else if (amount < 0) {
+            this.category = TransactionCategory.DEBIT;
+        } else {
+            throw new IllegalArgumentException("Transaction amount cannot be zero");
+        }
 
-    public void setAmount(double amount) {
-        if (category == TransactionCategory.DEBIT && amount > 0) {
+        // Validate amount based on transaction type
+        if (category == TransactionCategory.DEBIT && amount >= 0) {
             throw new IllegalArgumentException("Debit transactions must have negative amounts");
         }
-        if (category == TransactionCategory.CREDIT && amount < 0) {
+        if (category == TransactionCategory.CREDIT && amount <= 0) {
             throw new IllegalArgumentException("Credit transactions must have positive amounts");
         }
+
         this.amount = amount;
     }
 
-    public void process() {
-        if (category == TransactionCategory.DEBIT) {
-            if (Math.abs(amount) > sender.getBalance()) {
-                throw new IllegalStateException("Insufficient balance for debit transaction");
-            }
-            
-            sender.setBalance(sender.getBalance() + amount);  // amount is negative
-            recipient.setBalance(recipient.getBalance() - amount);
-        } else if (category == TransactionCategory.CREDIT) {
-            sender.setBalance(sender.getBalance() + amount);
-            recipient.setBalance(recipient.getBalance() - amount);
+    // Process transaction with improved error checking
+    private void process() {
+        double absoluteAmount = Math.abs(amount);
+        
+        if (sender.getBalance() < absoluteAmount) {
+            throw new IllegalArgumentException("Insufficient balance for transaction");
         }
+
+        sender.setBalance(sender.getBalance() - absoluteAmount);
+        recipient.setBalance(recipient.getBalance() + absoluteAmount);
     }
 
+    // Existing getter methods remain the same
     public String getIdentifier() {
         return identifier;
     }
@@ -72,11 +94,11 @@ public class Transaction {
     @Override
     public String toString() {
         return "Transaction{" +
-                "id='" + identifier + '\'' +
-                ", sender=" + sender.getName() +
-                ", recipient=" + recipient.getName() +
-                ", amount=" + amount +
-                ", category=" + category +
-                '}';
+            "id='" + identifier + '\'' +
+            ", sender=" + sender.getName() +
+            ", recipient=" + recipient.getName() +
+            ", amount=" + amount +
+            ", category=" + category +
+            '}';
     }
 }

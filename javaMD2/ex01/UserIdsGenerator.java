@@ -1,13 +1,10 @@
 public class UserIdsGenerator {
   private static int lastGeneratedID = 0;
-  private static UserIdsGenerator instance;
+  private final static UserIdsGenerator instance = new UserIdsGenerator();
 
   private UserIdsGenerator() {}
 
-  public static synchronized UserIdsGenerator getInstance() {
-      if (instance == null) {
-          instance = new UserIdsGenerator();
-      }
+  public static UserIdsGenerator getInstance() {
       return instance;
   }
 
