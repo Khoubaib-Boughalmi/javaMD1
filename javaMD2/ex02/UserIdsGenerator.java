@@ -1,3 +1,5 @@
+package ex02;
+
 public class UserIdsGenerator {
   private static int lastGeneratedID = 0;
   private static UserIdsGenerator instance;

@@ -1,38 +1,55 @@
-
+package ex02;
 
 public class User {
-  private int     id          = 0;
-  private int     balance     = 0;
-  private String  name        = "";
+    private int identifier;
+    private String name;
+    private double balance;
 
-  // public User(User user) {
-  //   this.id = user.id;
-  //   this.name = user.name;
-  //   this.balance = user.balance;
-  // }
+    public User(String name, double initialBalance) {
+        this.identifier = UserIdsGenerator.getInstance().generateId();
+        setName(name);
+        
+        if (initialBalance < 0) {
+            System.out.println("Initial balance cannot be negative");
+            return;
+        }
+        this.balance = initialBalance;
+    }
 
-  public User(String name, int balance) {
-    this.id = UserIdsGenerator.getInstance().generateId();
-    this.name = name;
-    if (balance < 0) return;
-    this.balance = balance;
-  }
+    public int getIdentifier() {
+        return identifier;
+    }
 
-  public int getBalance() {
-    return this.balance;
-  }
+    public String getName() {
+        return name;
+    }
 
-  public void setBalance(int newBalance) {
-    if (balance < 0) return;
-    this.balance = newBalance;
-  }
+    public void setName(String name) {
+        if (name == null || name.trim().isEmpty()) {
+            System.out.println("Name cannot be null or empty");
+            return;
+        }
+        this.name = name.trim();
+    }
 
-  public String getName() {
-    return this.name;
-  }
+    public double getBalance() {
+        return balance;
+    }
 
-  public int getId() {
-    return this.id;
-  }
+    public void setBalance(double balance) {
+        if (balance < 0) {
+            System.out.println("Not enough funds");
+            return;
+        }
+        this.balance = balance;
+    }
 
+    @Override
+    public String toString() {
+        return "User{" +
+            "id=" + identifier +
+            ", name='" + name + '\'' +
+            ", balance=" + balance +
+            '}';
+    }
 }

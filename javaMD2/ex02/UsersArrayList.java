@@ -1,4 +1,4 @@
-
+package ex02;
 
 public class UsersArrayList implements UsersList{
 
@@ -29,7 +29,7 @@ public class UsersArrayList implements UsersList{
   @Override
   public User getUserByID(int id) {
     for (int i = 0; i < usersCount; i++) {
-      if (usersList[i] != null && usersList[i].getId() == id) {
+      if (usersList[i] != null && usersList[i].getIdentifier() == id) {
         return usersList[i];
       }
     }
@@ -38,7 +38,7 @@ public class UsersArrayList implements UsersList{
 
   @Override
   public User getUserByIndex(int index) {
-    if (index >= 0 && index < usersCount ) return usersList[index];
+    if (index >= 0 && index < usersCount) return usersList[index];
     throw new UserNotFoundException("User with ID " + index + " not found.");
   }
 
