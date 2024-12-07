@@ -13,7 +13,7 @@ public class Program {
     
     System.out.println("# of Users: " + usersList.getNumberOfUsers());
 
-    // User searchedUserByID = usersList.getUserByID(2);
+    // User searchedUserByID = usersList.getUserById(2);
     // System.out.println("User's name: " + searchedUserByID.getName());
     
     // User searchedUserByIndex = usersList.getUserByIndex(2);
@@ -28,5 +28,6 @@ public class Program {
     for (int i = 0; i < usersList.getNumberOfUsers(); ++i) {
       System.out.println("User's name: " + usersList.getUserByIndex(i).getName());
     }
+    System.out.println("User's name: " + usersList.getUserByIndex(99).getName());
   }
 }
