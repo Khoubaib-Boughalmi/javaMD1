@@ -1,10 +1,11 @@
-package ex03;
+package ex04;
 
 public class User {
     private int identifier;
     private String name;
     private double balance;
     private TransactionsList transactionsList;
+
 
     public User(String name, double initialBalance) {
         this.identifier = UserIdsGenerator.getInstance().generateId();
@@ -44,6 +45,14 @@ public class User {
             return;
         }
         this.balance = balance;
+    }
+
+    public TransactionsList getTransactionsList () {
+        return this.transactionsList;
+    }
+
+    public void setTransactionsList (Transaction transaction) {
+        this.transactionsList.addTransaction(transaction);
     }
 
     @Override
