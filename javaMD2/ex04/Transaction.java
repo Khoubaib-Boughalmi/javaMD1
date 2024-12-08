@@ -1,4 +1,5 @@
 package ex04;
+
 import java.util.UUID;
 
 public class Transaction {
@@ -13,8 +14,15 @@ public class Transaction {
         DEBIT,
         CREDIT
     }
+
     public static class TransactionNotFoundException extends RuntimeException {
-        public TransactionNotFoundException (String message) {
+        public TransactionNotFoundException(String message) {
+            super(message);
+        }
+    }
+
+    public static class IllegalTransactionException extends RuntimeException {
+        public IllegalTransactionException (String message) {
             super(message);
         }
     }
@@ -37,7 +45,7 @@ public class Transaction {
             sender.setBalance(sender.getBalance() - absoluteAmount);
             recipient.setBalance(recipient.getBalance() + absoluteAmount);
             System.out.println("Transaction succeeded");
-            return new Transaction[]{creditTransaction, debitTransaction};
+            return new Transaction[] { creditTransaction, debitTransaction };
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
             return null;
@@ -45,10 +53,12 @@ public class Transaction {
     }
 
     public static Transaction copyTransaction(Transaction transaction) {
-        if (transaction == null) 
+        if (transaction == null)
             throw new IllegalArgumentException("Transaction cannot be zero null");
-        return new Transaction(transaction.getSender(), transaction.getRecipient(), transaction.getAmount(), transaction.getIdentifier(), true);
+        return new Transaction(transaction.getSender(), transaction.getRecipient(), transaction.getAmount(),
+                transaction.getIdentifier(), true);
     }
+
     // Constructor with improved validation
     private Transaction(User sender, User recipient, double amount, String identifier, boolean isCopyConstructor) {
         this.identifier = identifier;
@@ -57,7 +67,7 @@ public class Transaction {
         this.nextTransaction = null;
         // Validate transaction amount and set category
         validateAndSetTransaction(amount);
-        
+
         // Process the transaction
         process(isCopyConstructor);
     }
@@ -87,7 +97,7 @@ public class Transaction {
     private void process(boolean isCopyConstructor) {
         double absoluteAmount = Math.abs(amount);
         if (!isCopyConstructor && sender.getBalance() < absoluteAmount) {
-            throw new IllegalArgumentException("Insufficient balance for transaction");
+            throw new IllegalTransactionException("Insufficient balance for transaction");
         }
     }
 
@@ -111,7 +121,7 @@ public class Transaction {
     public double getAmount() {
         return amount;
     }
-    
+
     public Transaction getNextTransaction() {
         return this.nextTransaction;
     }
@@ -123,11 +133,11 @@ public class Transaction {
     @Override
     public String toString() {
         return "Transaction{" +
-            "id='" + identifier + '\'' +
-            ", sender=" + sender.getName() +
-            ", recipient=" + recipient.getName() +
-            ", amount=" + amount +
-            ", category=" + category +
-            '}';
+                "id='" + identifier + '\'' +
+                ", sender=" + sender.getName() +
+                ", recipient=" + recipient.getName() +
+                ", amount=" + amount +
+                ", category=" + category +
+                '}';
     }
 }
