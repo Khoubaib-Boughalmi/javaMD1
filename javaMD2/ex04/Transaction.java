@@ -20,10 +20,22 @@ public class Transaction {
     }
 
     public static Transaction[] createTransaction(User sender, User recipient, double amount) {
+        if (sender == null || recipient == null) {
+            throw new IllegalArgumentException("Sender and recipient cannot be null");
+        }
+        if (sender == recipient) {
+            throw new IllegalArgumentException("Sender and recipient cannot be the same");
+        }
+        if (amount == 0) {
+            throw new IllegalArgumentException("Transaction amount cannot be zero");
+        }
+        double absoluteAmount = Math.abs(amount);
         try {
             String identifier = UUID.randomUUID().toString();
             Transaction creditTransaction = new Transaction(sender, recipient, amount, identifier, false);
-            Transaction debitTransaction = new Transaction(recipient, sender, -amount, identifier, false);
+            Transaction debitTransaction = new Transaction(sender, recipient, -amount, identifier, false);
+            sender.setBalance(sender.getBalance() - absoluteAmount);
+            recipient.setBalance(recipient.getBalance() + absoluteAmount);
             System.out.println("Transaction succeeded");
             return new Transaction[]{creditTransaction, debitTransaction};
         } catch (IllegalArgumentException e) {
@@ -76,10 +88,6 @@ public class Transaction {
         double absoluteAmount = Math.abs(amount);
         if (!isCopyConstructor && sender.getBalance() < absoluteAmount) {
             throw new IllegalArgumentException("Insufficient balance for transaction");
-        }
-        if (!isCopyConstructor) {
-            sender.setBalance(sender.getBalance() - absoluteAmount);
-            recipient.setBalance(recipient.getBalance() + absoluteAmount);
         }
     }
 

@@ -1,9 +1,17 @@
 package ex04;
 public class TransactionsService {
-    UsersList userList; 
+    private UsersArrayList userList;
+    
+    public TransactionsService(UsersArrayList userList) {
+        this.userList = userList;
+    }
 
     public void addUser (User user) {
         userList.addUser(user);
+    }
+
+    public UsersArrayList geUserList () {
+        return this.userList;
     }
 
     public double getUserBalance (User user) {
@@ -14,6 +22,9 @@ public class TransactionsService {
         User sender = userList.getUserById(userId1);
         User recipient = userList.getUserById(userId2);
         Transaction[] transactions = Transaction.createTransaction(sender, recipient, amount);
+        if (transactions == null) {
+            return;
+        }
         recipient.setTransactionsList(transactions[0]);
         sender.setTransactionsList(transactions[1]);
     }
@@ -56,9 +67,6 @@ public class TransactionsService {
                 User userB = userList.getUserById(j);
                 Transaction[] userBTransactions = userB.getTransactionsList().transformTransactionList();
                 tmpInvalidTransaction = checkValidity(userATransactions, userBTransactions);
-                if (tmpInvalidTransaction && tmpInvalidTransaction.transformTransactionList().length) {
-                    invalidTransactions
-                }
             }
         }
         return new Transaction[0];

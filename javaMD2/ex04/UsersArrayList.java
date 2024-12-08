@@ -47,4 +47,9 @@ public class UsersArrayList implements UsersList{
     return usersCount;
   }
 
+  public User []getUsersList()  {
+    return usersList;
+  }
+
+
 }

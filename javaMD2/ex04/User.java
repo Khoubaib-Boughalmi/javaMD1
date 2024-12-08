@@ -4,7 +4,7 @@ public class User {
     private int identifier;
     private String name;
     private double balance;
-    private TransactionsList transactionsList;
+    private TransactionsLinkedList transactionsList = new TransactionsLinkedList();
 
 
     public User(String name, double initialBalance) {
