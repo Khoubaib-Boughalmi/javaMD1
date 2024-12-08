@@ -20,7 +20,6 @@ public class Menu {
         System.out.println(++number + " Finish execution");
     }
 
-
     public void processOption(Mode mode, int option) {
         switch (mode) {
             case DEV -> handleDevelopmentMode(option);
@@ -31,10 +30,9 @@ public class Menu {
     private void handleProductionMode(int option) {
         switch (option) {
             case 1 -> handleFirstOption();
-            case 2 -> handleFirstOption();
-            case 3 -> handleFirstOption();
-            case 4 -> handleFirstOption();
-            case 5 -> handleFirstOption();
+            case 2 -> handleSecondOption();
+            case 3 -> handleThirdOption();
+            case 4 -> handleFourthOption();
             default -> throw new IllegalArgumentException("Invalid input: Please select a number between 1 and 5.");
         }
     }
@@ -42,12 +40,11 @@ public class Menu {
     private void handleDevelopmentMode(int option) {
         switch (option) {
             case 1 -> handleFirstOption();
-            case 2 -> handleFirstOption();
-            case 3 -> handleFirstOption();
-            case 4 -> handleFirstOption();
-            case 5 -> handleFirstOption();
-            case 6 -> handleFirstOption();
-            case 7 -> handleFirstOption();
+            case 2 -> handleSecondOption();
+            case 3 -> handleThirdOption();
+            case 4 -> handleFourthOption();
+            case 5 -> handleFithOption();
+            case 6 -> handleSixthOption();
             default -> throw new IllegalArgumentException("Invalid input: Please select a number between 1 and 7.");
         }
     }
@@ -70,6 +67,14 @@ public class Menu {
 
     private void handleFourthOption() {
         System.out.println("Executing Fourth Option");
+    }
+
+    private void handleFithOption() {
+        System.out.println("Executing Fith Option");
+    }
+
+    private void handleSixthOption() {
+        System.out.println("Executing Sixth Option");
     }
 
     private void handleConditionalOption1() {
