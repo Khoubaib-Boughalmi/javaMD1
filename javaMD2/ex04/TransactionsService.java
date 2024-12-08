@@ -37,6 +37,7 @@ public class TransactionsService {
 
     public void removeTransferTransaction(User user, String transactionId) {
         TransactionsList transactions = user.getTransactionsList();
+        System.out.println("trasnsationID" + transactionId);
         transactions.removeTransactionById(transactionId);
     }
 

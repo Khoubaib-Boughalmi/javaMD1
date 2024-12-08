@@ -35,9 +35,10 @@ public class TransactionsService {
         return transactions.transformTransactionList();
     }
 
-    public void removeTransferTransaction(User user, String transactionId) {
+    public Transaction removeTransferTransaction(User user, String transactionId) {
         TransactionsList transactions = user.getTransactionsList();
-        transactions.removeTransactionById(transactionId);
+        Transaction transaction = transactions.removeTransactionById(transactionId);
+        return transaction;
     }
 
     public Transaction[] checkTransferTranscationValidity() {

@@ -1,10 +1,7 @@
 package ex05;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Scanner;
-import java.util.Locale.Category;
-
 import ex05.Transaction.TransactionCategory;
 
 public class Menu {
@@ -95,7 +92,7 @@ public class Menu {
         }
         User user = this.transactionsService.geUserList().getUserById(userId);
 
-        System.out.println(user.getName() + " - " + user.getBalance());
+        System.out.println(ConsoleColor.GREEN.colorize(user.getName() + " - " + user.getBalance()));
     }
 
     private void handleThirdOption(Scanner scanner) {
@@ -143,15 +140,48 @@ public class Menu {
         Transaction[] transactions = this.transactionsService.getUserTransferTransactions(user);
         for (Transaction t : transactions) {
             if (t.getCategory() == TransactionCategory.DEBIT) {
-                System.out.println("To " + t.getRecipient().getName() + " " + t.getAmount() + " (id = "+ t.getRecipient().getIdentifier() +") with id = " + t.getIdentifier());
+                System.out.println(ConsoleColor.GREEN.colorize("To " + t.getRecipient().getName() + " " + t.getAmount() + " (id = "+ t.getRecipient().getIdentifier() +") with id = " + t.getIdentifier()));
             } else if (t.getCategory().equals(TransactionCategory.CREDIT)) {
-                System.out.println("FROM " + t.getSender().getName() + " " + t.getAmount() + " (id = "+ t.getRecipient().getIdentifier() +") with id = " + t.getIdentifier());
+                System.out.println(ConsoleColor.GREEN.colorize("From " + t.getSender().getName() + " " + t.getAmount() + " (id = "+ t.getRecipient().getIdentifier() +") with id = " + t.getIdentifier()));
             }
         }
     }
 
     private void handleFithOption(Scanner scanner) {
-        System.out.println("Executing Fith Option");
+        System.out.println("Enter a user ID and a transfer ID");
+        String input = scanner.nextLine().trim();
+
+        if (input.isEmpty()) {
+            throw new IllegalArgumentException("Invalid input. Please provide a non-empty value.");
+        }
+
+        String[] inputList = input.split(" ");
+        if (inputList == null || inputList.length != 2) {
+            throw new IllegalArgumentException("Incorrect Input. Please provde a User ID and Transaction ID");
+        }
+        int userId;
+        String transactionId;
+        try {
+            userId = Integer.parseInt(inputList[0]);
+            transactionId = inputList[1].trim();
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Invalid input. Please provide a numeric user IDs and amount.");
+        }
+
+        User user = this.transactionsService.geUserList().getUserById(userId);
+        System.out.println("user " + user);
+        System.out.println("Trans " + Arrays.toString(this.transactionsService.getUserTransferTransactions(user)));
+        try {
+            Transaction transaction = this.transactionsService.removeTransferTransaction(user, transactionId);
+            // Transfer To Mike(id = 2) 150 removed
+            if (transaction.getCategory() == TransactionCategory.DEBIT) {
+                System.out.println(ConsoleColor.GREEN.colorize("Transfer To " + transaction.getRecipient().getName() + " (id = "+ transaction.getRecipient().getIdentifier() +") " + transaction.getAmount() +  "removed "));
+            } else if (transaction.getCategory().equals(TransactionCategory.CREDIT)) {
+                System.out.println(ConsoleColor.GREEN.colorize("Transfer From " + transaction.getSender().getName() + " (id = "+ transaction.getRecipient().getIdentifier() +") " + transaction.getAmount() +  "removed "));
+            }
+        } catch (Exception e) {
+            System.out.println(ConsoleColor.RED.colorize(e.getMessage()));
+        }
     }
 
     private void handleSixthOption(Scanner scanner) {

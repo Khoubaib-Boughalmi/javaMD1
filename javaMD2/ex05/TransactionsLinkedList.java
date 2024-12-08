@@ -28,20 +28,24 @@ public class TransactionsLinkedList implements TransactionsList {
     }
 
     @Override
-    public void removeTransactionById(String id) {
+    public Transaction removeTransactionById(String id) {
         Transaction previous = null;
         Transaction current = head;
+        System.out.println(id);
         while (current != null) {
-            if (current.getIdentifier() == id && current == head) {
+            System.out.println(id);
+            System.out.println(current.getIdentifier());
+            
+            if (current.getIdentifier().equals(id) && current == head) {
                 head = current.getNextTransaction();
                 current = null;
                 this.listSize -= 1;
-                return ;
-            } else if (current.getIdentifier() == id && current != head) {
+                return current;
+            } else if (current.getIdentifier().equals(id) && current != head) {
                 previous.setNextTransaction(current.getNextTransaction());
                 current = null;
                 this.listSize -= 1;
-                return ;
+                return current; 
             }
             previous = current;
             current = current.getNextTransaction();
