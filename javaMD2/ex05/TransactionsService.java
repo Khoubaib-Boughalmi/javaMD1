@@ -1,7 +1,7 @@
-package ex04;
+package ex05;
 
 public class TransactionsService {
-    private final UsersArrayList userList;
+    private UsersArrayList userList;
 
     public TransactionsService(UsersArrayList userList) {
         this.userList = userList;
