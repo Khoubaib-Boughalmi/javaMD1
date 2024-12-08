@@ -21,7 +21,6 @@ public class Program {
 
             Menu menu = new Menu();
 
-            // Try-with-resources ensures the Scanner is closed automatically
             try (Scanner scanner = new Scanner(System.in)) {
                 while (true) {
                     try {
@@ -36,7 +35,7 @@ public class Program {
                             continue;
                         }
                         if (mode == Mode.DEV && option == 7 || mode == Mode.PRODUCTION && option == 5) break;
-                        menu.processOption(mode, option);
+                        menu.processOption(mode, option, scanner);
 
                     } catch (Exception e) {
                         System.out.println(ConsoleColor.RED.colorize(e.getMessage()));
