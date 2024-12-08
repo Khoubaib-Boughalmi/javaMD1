@@ -32,6 +32,7 @@ public class Program {
                             option = Integer.parseInt(input);
                         } catch (NumberFormatException e) {
                             System.out.println(ConsoleColor.RED.colorize("Please provide a valid option"));
+                            System.out.println("---------------------------------------------------------");
                             continue;
                         }
                         if (mode == Mode.DEV && option == 7 || mode == Mode.PRODUCTION && option == 5) break;
@@ -40,6 +41,7 @@ public class Program {
                     } catch (Exception e) {
                         System.out.println(ConsoleColor.RED.colorize(e.getMessage()));
                     }
+                    System.out.println("---------------------------------------------------------");
                 }
             }
         } catch (Exception e) {

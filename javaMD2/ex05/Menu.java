@@ -3,6 +3,9 @@ package ex05;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Scanner;
+import java.util.Locale.Category;
+
+import ex05.Transaction.TransactionCategory;
 
 public class Menu {
     private final TransactionsService transactionsService;
@@ -60,7 +63,7 @@ public class Menu {
     private void handleFirstOption(Scanner scanner) {
         System.out.println("Enter a user name and a balance:");
         if (!scanner.hasNextLine()) {
-            throw new IllegalArgumentException("No input available. Please try again.");
+            throw new IllegalArgumentException("Incorrect Input. Please try again.");
         }
         String input = scanner.nextLine().trim();
         if (input.isEmpty()) {
@@ -68,34 +71,83 @@ public class Menu {
         }
         String[] inputList = input.split(" ");
         if (inputList == null || inputList.length != 2) {
-            throw new IllegalArgumentException("No input available. Please provde a name and a balance.");
+            throw new IllegalArgumentException("Incorrect Input. Please provde a name and a balance.");
         }
         this.transactionsService.addUser(new User(inputList[0], Double.valueOf(inputList[1])));
-        UsersArrayList users =  this.transactionsService.geUserList();
-        System.out.println(ConsoleColor.GREEN.colorize("User with id = " + users.getUserById(users.getNumberOfUsers()).getIdentifier() + " is added"));
+        UsersArrayList users = this.transactionsService.geUserList();
+        System.out.println(ConsoleColor.GREEN.colorize(
+                "User with id = " + users.getUserById(users.getNumberOfUsers()).getIdentifier() + " is added"));
     }
-    
+
     private void handleSecondOption(Scanner scanner) {
         int userId;
         System.out.println("Enter a user ID");
         String input = scanner.nextLine().trim();
+
         if (input.isEmpty()) {
             throw new IllegalArgumentException("Invalid input. Please provide a non-empty value.");
         }
+
         try {
             userId = Integer.parseInt(input);
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("Invalid input. Please provide a numeric user ID.");
-        }        User user = this.transactionsService.geUserList().getUserById(userId);
+        }
+        User user = this.transactionsService.geUserList().getUserById(userId);
+
         System.out.println(user.getName() + " - " + user.getBalance());
     }
 
     private void handleThirdOption(Scanner scanner) {
-        System.out.println("Executing Third Option");
+        System.out.println("Enter a sender ID, a recipient ID, and a transfer amount");
+        String input = scanner.nextLine().trim();
+
+        if (input.isEmpty()) {
+            throw new IllegalArgumentException("Invalid input. Please provide a non-empty value.");
+        }
+
+        String[] inputList = input.split(" ");
+        if (inputList == null || inputList.length != 3) {
+            throw new IllegalArgumentException("Incorrect Input. Please provde a Sender ID Receiver ID and an Amount");
+        }
+        int senderId;
+        int receiverId;
+        double amount;
+        try {
+            senderId = Integer.parseInt(inputList[0]);
+            receiverId = Integer.parseInt(inputList[1]);
+            amount = Double.parseDouble(inputList[2]);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Invalid input. Please provide a numeric user IDs and amount.");
+        }
+        this.transactionsService.createTransferTransaction(senderId, receiverId, amount);
     }
 
     private void handleFourthOption(Scanner scanner) {
-        System.out.println("Executing Fourth Option");
+        System.out.println("Enter a user ID");
+        String input = scanner.nextLine().trim();
+
+        if (input.isEmpty()) {
+            throw new IllegalArgumentException("Invalid input. Please provide a non-empty value.");
+        }
+
+        int userId;
+        
+        try {
+            userId = Integer.parseInt(input);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Invalid input. Please provide a numeric user ID");
+        }
+
+        User user = this.transactionsService.geUserList().getUserById(userId);
+        Transaction[] transactions = this.transactionsService.getUserTransferTransactions(user);
+        for (Transaction t : transactions) {
+            if (t.getCategory() == TransactionCategory.DEBIT) {
+                System.out.println("To " + t.getRecipient().getName() + " " + t.getAmount() + " (id = "+ t.getRecipient().getIdentifier() +") with id = " + t.getIdentifier());
+            } else if (t.getCategory().equals(TransactionCategory.CREDIT)) {
+                System.out.println("FROM " + t.getSender().getName() + " " + t.getAmount() + " (id = "+ t.getRecipient().getIdentifier() +") with id = " + t.getIdentifier());
+            }
+        }
     }
 
     private void handleFithOption(Scanner scanner) {
