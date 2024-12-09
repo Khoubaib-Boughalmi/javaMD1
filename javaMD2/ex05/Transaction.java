@@ -44,7 +44,7 @@ public class Transaction {
             Transaction debitTransaction = new Transaction(sender, recipient, -amount, identifier, false);
             sender.setBalance(sender.getBalance() - absoluteAmount);
             recipient.setBalance(recipient.getBalance() + absoluteAmount);
-            System.out.println(ConsoleColor.GREEN.colorize("Transaction succeeded"));
+            System.out.println(ConsoleColor.GREEN.colorize("The transfer is completed"));
             return new Transaction[] { creditTransaction, debitTransaction };
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());

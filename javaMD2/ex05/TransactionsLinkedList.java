@@ -31,26 +31,23 @@ public class TransactionsLinkedList implements TransactionsList {
     public Transaction removeTransactionById(String id) {
         Transaction previous = null;
         Transaction current = head;
-        System.out.println(id);
+        
         while (current != null) {
-            System.out.println(id);
-            System.out.println(current.getIdentifier());
-            
-            if (current.getIdentifier().equals(id) && current == head) {
-                head = current.getNextTransaction();
-                current = null;
+            if (current.getIdentifier().equals(id)) {
+                if (current == head) {
+                    head = current.getNextTransaction();
+                } else {
+                    previous.setNextTransaction(current.getNextTransaction());
+                }
                 this.listSize -= 1;
                 return current;
-            } else if (current.getIdentifier().equals(id) && current != head) {
-                previous.setNextTransaction(current.getNextTransaction());
-                current = null;
-                this.listSize -= 1;
-                return current; 
             }
+            
             previous = current;
             current = current.getNextTransaction();
         }
-        throw new Transaction.TransactionNotFoundException("Transiction With ID " + id + " does not exist");
+        
+        throw new Transaction.TransactionNotFoundException("Transaction with ID " + id + " does not exist");
     }
     
     @Override

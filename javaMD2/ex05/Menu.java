@@ -140,9 +140,9 @@ public class Menu {
         Transaction[] transactions = this.transactionsService.getUserTransferTransactions(user);
         for (Transaction t : transactions) {
             if (t.getCategory() == TransactionCategory.DEBIT) {
-                System.out.println(ConsoleColor.GREEN.colorize("To " + t.getRecipient().getName() + " " + t.getAmount() + " (id = "+ t.getRecipient().getIdentifier() +") with id = " + t.getIdentifier()));
+                    System.out.println(ConsoleColor.GREEN.colorize("To " + t.getRecipient().getName() + "(id = " + t.getRecipient().getIdentifier() + ") " + t.getAmount() + " with id = " + t.getIdentifier()));
             } else if (t.getCategory().equals(TransactionCategory.CREDIT)) {
-                System.out.println(ConsoleColor.GREEN.colorize("From " + t.getSender().getName() + " " + t.getAmount() + " (id = "+ t.getRecipient().getIdentifier() +") with id = " + t.getIdentifier()));
+                System.out.println(ConsoleColor.GREEN.colorize("From " + t.getSender().getName() + "(id = " + t.getSender().getIdentifier() + ") " + t.getAmount() + " with id = " + t.getIdentifier()));
             }
         }
     }
@@ -173,11 +173,10 @@ public class Menu {
         System.out.println("Trans " + Arrays.toString(this.transactionsService.getUserTransferTransactions(user)));
         try {
             Transaction transaction = this.transactionsService.removeTransferTransaction(user, transactionId);
-            // Transfer To Mike(id = 2) 150 removed
             if (transaction.getCategory() == TransactionCategory.DEBIT) {
-                System.out.println(ConsoleColor.GREEN.colorize("Transfer To " + transaction.getRecipient().getName() + " (id = "+ transaction.getRecipient().getIdentifier() +") " + transaction.getAmount() +  "removed "));
+                System.out.println(ConsoleColor.GREEN.colorize("Transfer To " + transaction.getRecipient().getName() + " (id = "+ transaction.getRecipient().getIdentifier() +") " + Math.abs(transaction.getAmount()) +  " removed"));
             } else if (transaction.getCategory().equals(TransactionCategory.CREDIT)) {
-                System.out.println(ConsoleColor.GREEN.colorize("Transfer From " + transaction.getSender().getName() + " (id = "+ transaction.getRecipient().getIdentifier() +") " + transaction.getAmount() +  "removed "));
+                System.out.println(ConsoleColor.GREEN.colorize("Transfer From " + transaction.getSender().getName() + " (id = "+ transaction.getRecipient().getIdentifier() +") " + transaction.getAmount() +  " removed"));
             }
         } catch (Exception e) {
             System.out.println(ConsoleColor.RED.colorize(e.getMessage()));
@@ -185,7 +184,13 @@ public class Menu {
     }
 
     private void handleSixthOption(Scanner scanner) {
-        System.out.println("Executing Sixth Option");
+        System.out.println("Check results");
+        Transaction[] unpairedTransactions = this.transactionsService.checkTransferTranscationValidity();
+        for (Transaction t: unpairedTransactions) {
+            User sender = t.getSender();
+            User recipient = t.getRecipient();
+            System.out.println(ConsoleColor.GREEN.colorize(recipient.getName() + " (id = " + recipient.getIdentifier() + ") has an unacknowledged transfer id = " + t.getIdentifier() + " from " + sender.getName() + "(id = " + sender.getIdentifier() + ") for " + String.format("%.1f", t.getAmount())));
+        }
     }
 
     private void handleConditionalOption1() {
