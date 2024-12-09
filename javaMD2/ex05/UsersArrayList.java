@@ -1,20 +1,21 @@
 package ex05;
 
-public class UsersArrayList implements UsersList{
+public class UsersArrayList implements UsersList {
 
   public static class UserNotFoundException extends RuntimeException {
     public UserNotFoundException(String message) {
-        super(message);
+      super(message);
     }
   }
 
-  public int usersCount = 0; 
+  public int usersCount = 0;
   private User[] usersList = new User[10];
-  
-  public UsersArrayList() {}
+
+  public UsersArrayList() {
+  }
 
   @Override
-  public void addUser(User user) {    
+  public void addUser(User user) {
     if (usersCount == usersList.length) {
       int newSize = usersList.length + (usersList.length / 2);
       User[] tmpUsersList = new User[newSize];
@@ -38,7 +39,8 @@ public class UsersArrayList implements UsersList{
 
   @Override
   public User getUserByIndex(int index) {
-    if (index >= 0 && index < usersCount) return usersList[index];
+    if (index >= 0 && index < usersCount)
+      return usersList[index];
     throw new UserNotFoundException("User with ID " + index + " not found.");
   }
 
@@ -47,9 +49,8 @@ public class UsersArrayList implements UsersList{
     return usersCount;
   }
 
-  public User []getUsersList()  {
+  public User[] getUsersList() {
     return usersList;
   }
-
 
 }

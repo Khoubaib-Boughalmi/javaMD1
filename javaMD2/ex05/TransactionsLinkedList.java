@@ -3,7 +3,7 @@ package ex05;
 public class TransactionsLinkedList implements TransactionsList {
     private Transaction head;
     private Transaction tail;
-    private int         listSize;
+    private int listSize;
 
     public TransactionsLinkedList() {
         this.head = null;
@@ -15,7 +15,7 @@ public class TransactionsLinkedList implements TransactionsList {
         if (transaction == null) {
             throw new IllegalArgumentException("Transaction cannot be null");
         }
-        
+
         if (head == null) {
             head = transaction;
             tail = transaction;
@@ -23,7 +23,7 @@ public class TransactionsLinkedList implements TransactionsList {
             tail.setNextTransaction(transaction);
             tail = transaction;
         }
-        
+
         listSize += 1;
     }
 
@@ -31,7 +31,7 @@ public class TransactionsLinkedList implements TransactionsList {
     public Transaction removeTransactionById(String id) {
         Transaction previous = null;
         Transaction current = head;
-        
+
         while (current != null) {
             if (current.getIdentifier().equals(id)) {
                 if (current == head) {
@@ -42,17 +42,17 @@ public class TransactionsLinkedList implements TransactionsList {
                 this.listSize -= 1;
                 return current;
             }
-            
+
             previous = current;
             current = current.getNextTransaction();
         }
-        
+
         throw new Transaction.TransactionNotFoundException("Transaction with ID " + id + " does not exist");
     }
-    
+
     @Override
     public Transaction[] transformTransactionList() {
-        Transaction []transactions =  new Transaction[this.listSize];
+        Transaction[] transactions = new Transaction[this.listSize];
         Transaction current = head;
         int i = 0;
         while (current != null) {

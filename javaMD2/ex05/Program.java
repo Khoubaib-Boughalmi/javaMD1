@@ -7,7 +7,6 @@ enum Mode {
     PRODUCTION
 }
 
-
 public class Program {
     public void initProgram(String[] args) {
     }
@@ -35,7 +34,8 @@ public class Program {
                             System.out.println("---------------------------------------------------------");
                             continue;
                         }
-                        if (mode == Mode.DEV && option == 7 || mode == Mode.PRODUCTION && option == 5) break;
+                        if (mode == Mode.DEV && option == 7 || mode == Mode.PRODUCTION && option == 5)
+                            break;
                         menu.processOption(mode, option, scanner);
 
                     } catch (Exception e) {

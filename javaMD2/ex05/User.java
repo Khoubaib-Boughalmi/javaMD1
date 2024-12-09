@@ -6,11 +6,10 @@ public class User {
     private double balance;
     private TransactionsLinkedList transactionsList = new TransactionsLinkedList();
 
-
     public User(String name, double initialBalance) {
         this.identifier = UserIdsGenerator.getInstance().generateId();
         setName(name);
-        
+
         if (initialBalance < 0) {
             System.out.println("Initial balance cannot be negative");
             return;
@@ -47,20 +46,20 @@ public class User {
         this.balance = balance;
     }
 
-    public TransactionsList getTransactionsList () {
+    public TransactionsList getTransactionsList() {
         return this.transactionsList;
     }
 
-    public void setTransactionsList (Transaction transaction) {
+    public void setTransactionsList(Transaction transaction) {
         this.transactionsList.addTransaction(transaction);
     }
 
     @Override
     public String toString() {
         return "User{" +
-            "id=" + identifier +
-            ", name='" + name + '\'' +
-            ", balance=" + balance +
-            '}';
+                "id=" + identifier +
+                ", name='" + name + '\'' +
+                ", balance=" + balance +
+                '}';
     }
 }

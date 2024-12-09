@@ -22,7 +22,7 @@ public class Transaction {
     }
 
     public static class IllegalTransactionException extends RuntimeException {
-        public IllegalTransactionException (String message) {
+        public IllegalTransactionException(String message) {
             super(message);
         }
     }
