@@ -26,4 +26,29 @@ public class SignatureMap {
     public Map<FileType, Map<String, Object>> getSignatures() {
         return this.signatures;
     }
+
+    public void printSignaturesDetailed(Map<FileType, Map<String, Object>> signatures) {
+        System.out.println("--- Detailed Signature Printing ---");
+        signatures.forEach((fileType, details) -> {
+            System.out.println("File Type: " + fileType);
+            System.out.println("Signature Details:");
+            
+            printDetail(details, "type");
+            printDetail(details, "magicNumber");
+            printDetail(details, "size");
+            printDetail(details, "offset");
+            
+            System.out.println("---");
+        });
+    }
+
+    private void printDetail(Map<String, Object> details, String key) {
+        Object value = details.get(key);
+        if (value != null) {
+            System.out.printf("%s: %s%n", 
+                key,
+                value
+            );
+        }
+    }
 }
