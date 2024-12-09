@@ -189,7 +189,7 @@ public class Menu {
         for (Transaction t: unpairedTransactions) {
             User sender = t.getSender();
             User recipient = t.getRecipient();
-            System.out.println(ConsoleColor.GREEN.colorize(recipient.getName() + " (id = " + recipient.getIdentifier() + ") has an unacknowledged transfer id = " + t.getIdentifier() + " from " + sender.getName() + "(id = " + sender.getIdentifier() + ") for " + String.format("%.1f", t.getAmount())));
+            System.out.println(ConsoleColor.GREEN.colorize(recipient.getName() + "(id = " + recipient.getIdentifier() + ") has an unacknowledged transfer id = " + t.getIdentifier() + " from " + sender.getName() + "(id = " + sender.getIdentifier() + ") for " + String.format("%.1f", t.getAmount())));
         }
     }
 
