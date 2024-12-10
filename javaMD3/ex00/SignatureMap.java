@@ -19,7 +19,6 @@ public class SignatureMap {
         innerMap.put("type", signature.getType());
         innerMap.put("magicNumber", signature.getMagicNumber());
         innerMap.put("size", signature.getSize());
-        innerMap.put("offset", signature.getOffset());
         this.signatures.put(signature.getType(), innerMap);
     }
 

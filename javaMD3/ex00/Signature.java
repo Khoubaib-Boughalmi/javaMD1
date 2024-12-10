@@ -18,13 +18,11 @@ public class Signature {
     private FileType type;
     private String magicNumber;
     private int size;
-    private int offset;
 
-    public Signature (FileType type, String magicNumber, int size, int offset) {
+    public Signature (FileType type, String magicNumber, int size) {
         this.type = type;
         this.magicNumber = magicNumber;
         this.size = size;
-        this.offset = offset;
     }
 
     public FileType getType() {
@@ -37,10 +35,6 @@ public class Signature {
 
     public int getSize() {
         return size;
-    }
-
-    public int getOffset() {
-        return offset;
     }
 }
 

@@ -2,8 +2,10 @@ package ex00;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.StringJoiner;
@@ -16,29 +18,78 @@ public class SignatureParser {
         this.signaturesMap = new SignatureMap();
     }
 
-    // FileInputStream (raw bytes) -> InputStreamReader (characters) -> BufferedReader (lines of text)
-    public void parseFile(String path) {
-        try (FileInputStream file = new FileInputStream(path); InputStreamReader reader = new InputStreamReader(file); BufferedReader bufferedReader = new BufferedReader(reader)) {
+    private String readLine(InputStreamReader reader) {
+        StringBuilder line = new StringBuilder("");
+        int c;
+        try {
+            while ((c = reader.read()) != -1) {
+                if ((char) c == '\n')
+                    break;
+                line.append((char) c);
+            }
+        } catch (
+
+        IOException e) {
+            e.printStackTrace();
+        }
+        return line.toString();
+    }
+
+    private void writeLine(OutputStreamWriter writer, String line) {
+        try {
+            writer.append(line + '\n');
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void createResultFile(OutputStreamWriter writer) {
+        try {
+            writer.write("");
+            writer.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (writer != null) {
+                    writer.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void parseSignatureFile(String inputPath, String outputPath) {
+        try (FileInputStream inputFile = new FileInputStream(inputPath);
+                InputStreamReader reader = new InputStreamReader(inputFile);
+                FileOutputStream outputfile = new FileOutputStream(outputPath);
+                OutputStreamWriter writer = new OutputStreamWriter(outputfile);) {
 
             String line;
-            while ((line = bufferedReader.readLine()) != null) {
+
+            try {
+                createResultFile(writer);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+
+            while (!(line = readLine(reader)).isEmpty()) {
                 String[] content = this.parseLine(line);
                 try {
                     StringBuilder intString = new StringBuilder();
                     for (String hex : content[1].split(" ")) {
                         int intValue = Integer.parseInt(hex, 16);
-                        intString.append(intValue).append(" "); 
+                        intString.append(intValue).append(" ");
                     }
-                    Signature signature = new Signature(FileType.valueOf(content[0]), intString.toString(), Integer.parseInt(content[2]), Integer.parseInt(content[3]));
+                    Signature signature = new Signature(FileType.valueOf(content[0]), intString.toString(),
+                            Integer.parseInt(content[2]));
                     signaturesMap.addSignature(signature);
                 } catch (NumberFormatException e) {
                     System.out.println(e.getMessage());
                 }
 
             }
-            // Map<FileType, Map<String, Object>> signaturesList = signaturesMap.getSignatures();
-            // signaturesMap.printSignaturesDetailed(signaturesList);
-
         } catch (IOException e) {
             System.out.println("Error reading the file: " + e.getMessage());
         }
@@ -49,8 +100,10 @@ public class SignatureParser {
         return content;
     }
 
-    public void decodeFile(String path) {
-        try (FileInputStream file = new FileInputStream(path);) {
+    public void decodeInputFile(String inputPath, String outputPath) {
+        try (FileInputStream file = new FileInputStream(inputPath);
+                FileOutputStream outputfile = new FileOutputStream(outputPath, true);
+                OutputStreamWriter writer = new OutputStreamWriter(outputfile);) {
             int count = 0;
             int memoryByte;
             ArrayList<Integer> magicBytes = new ArrayList<>();
@@ -65,9 +118,10 @@ public class SignatureParser {
             }
             String joinedBytes = joiner.toString();
             for (Map.Entry<FileType, Map<String, Object>> entry : signaturesList.entrySet()) {
-                String magicNumber = (String)entry.getValue().get("magicNumber");
+                String magicNumber = (String) entry.getValue().get("magicNumber");
                 if (joinedBytes.startsWith(magicNumber)) {
                     System.out.println("File type: " + entry.getKey());
+                    writeLine(writer, entry.getKey().toString());
                 }
             }
         } catch (Exception e) {
@@ -75,11 +129,4 @@ public class SignatureParser {
 
         }
     }
-
-    // Signature signature1 = new Signature(FileType.PNG, "89 50 4E 47 0D 0A 1A 0A", 8, 0);
-    // Signature signature2 = new Signature(FileType.JPEG, "FF D8 FF", 3, 0);
-    // signatures.addSignature(signature1);
-    // signatures.addSignature(signature2);
-    // Map<FileType, Map<String, Object>> signaturesList = signatures.getSignatures();
-    // signatures.printSignaturesDetailed(signaturesList);
 }
