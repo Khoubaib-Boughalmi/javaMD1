@@ -12,7 +12,7 @@ public class Program {
         System.out.println(documentAWordFrequencies);
         ArrayList<Integer> documentBWordFrequencies = Handler.getFrequencyOccurrence(documentBWords, mergedUniqueWords);
         System.out.println(documentBWordFrequencies);
-
-        // System.out.println(uniqueWords2);
+        double cosineSimilarity = Handler.calculateSimilarity(documentAWordFrequencies, documentBWordFrequencies);
+        System.out.printf("Similarity = %.2f%n", ((double) Math.floor(cosineSimilarity * 100)) / 100);
     }
 }

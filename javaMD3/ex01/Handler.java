@@ -46,4 +46,29 @@ public class Handler {
         sortedUniqueSet.addAll(lst2);
         return sortedUniqueSet;
     }
+
+    private static int calculateDotProduct(ArrayList<Integer> vectorA, ArrayList<Integer> vectorB) {
+        int product = 0;
+        for (int i = 0; i < vectorA.size(); i++) {
+            product += vectorA.get(i) * vectorB.get(i);
+        }
+        return  product;
+    }
+
+    private static double calculateVectorNorm(ArrayList<Integer> vectorA) {
+       double norm = calculateDotProduct(vectorA, vectorA);
+       return Math.sqrt(norm);
+    }
+    
+
+    public static double calculateSimilarity(ArrayList<Integer> vectorA, ArrayList<Integer> vectorB) {
+        if (vectorA.size() != vectorB.size()) {
+            throw new IllegalArgumentException("Vectors must be of the same size");
+        }
+        int numerator = calculateDotProduct(vectorA, vectorB);
+        double normA = calculateVectorNorm(vectorA);
+        double normB = calculateVectorNorm(vectorB);
+        if (normA == 0 || normB == 0) return 0.0;
+        return numerator/(normA * normB);
+    }
 }
