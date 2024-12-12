@@ -122,6 +122,7 @@ public class SignatureParser {
                 if (joinedBytes.startsWith(magicNumber)) {
                     System.out.println("File type: " + entry.getKey());
                     writeLine(writer, entry.getKey().toString());
+                    System.out.println("PROCESSED");
                 }
             }
         } catch (Exception e) {
