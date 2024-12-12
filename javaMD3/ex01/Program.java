@@ -1,20 +1,18 @@
 package ex01;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.TreeSet;
 
 public class Program {
     public static void main(String[] args) {
-        System.out.println("Hello, World!");
-        ArrayList<String> arrayListWords1 = Parser.parseFile("ex01/inputA.txt");
-        ArrayList<String> arrayListWords2 = Parser.parseFile("ex01/inputB.txt");
-        Set<String> joinedWords  = new HashSet<>(arrayListWords1);
-        joinedWords.addAll(arrayListWords2);
-        System.out.println(joinedWords);
-        
-        ArrayList<Integer> wordVector1 = Parser.getFrequencyOccurrence(arrayListWords1, joinedWords);
-        System.out.println(wordVector1);
+        ArrayList<String> documentAWords = Handler.parseFile("ex01/inputA.txt");
+        ArrayList<String> documentBWords = Handler.parseFile("ex01/inputB.txt");
+        TreeSet<String> mergedUniqueWords = Handler.sortAndMergeList(documentAWords, documentBWords);
+        ArrayList<Integer> documentAWordFrequencies = Handler.getFrequencyOccurrence(documentAWords, mergedUniqueWords);
+        System.out.println(documentAWordFrequencies);
+        ArrayList<Integer> documentBWordFrequencies = Handler.getFrequencyOccurrence(documentBWords, mergedUniqueWords);
+        System.out.println(documentBWordFrequencies);
+
         // System.out.println(uniqueWords2);
     }
 }
