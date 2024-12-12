@@ -12,6 +12,9 @@ public class Program {
         Set<String> joinedWords  = new HashSet<>(arrayListWords1);
         joinedWords.addAll(arrayListWords2);
         System.out.println(joinedWords);
+        
+        ArrayList<Integer> wordVector1 = Parser.getFrequencyOccurrence(arrayListWords1, joinedWords);
+        System.out.println(wordVector1);
         // System.out.println(uniqueWords2);
     }
 }

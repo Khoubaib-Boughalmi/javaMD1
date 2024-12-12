@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class Parser {
   private Map<String, Integer> wordCount;
@@ -29,6 +30,16 @@ public class Parser {
     } catch (Exception e) {
       System.out.println(e.getMessage());
     }
-    return  arrayListWords;
+    return arrayListWords;
+  }
+
+  public static ArrayList<Integer> getFrequencyOccurrence(ArrayList<String> words, Set<String> uniqueWords) {
+    ArrayList<Integer> frequency = new ArrayList<>();
+
+    for (String word: uniqueWords) {
+      frequency.add(Collections.frequency(words, word));
+    }
+
+    return frequency;
   }
 }
