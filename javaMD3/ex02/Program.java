@@ -1,16 +1,16 @@
 package ex02;
 public class Program {
     public static void main(String []args) {
-        String dir;
         try {
             Handler.checkValidProgramArgs(args);
-            dir = Handler.parseInputDirectory(args[0]);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-
-        try {
-            Tools.ls("/Users/kboughal/Desktop/javaModules/javaMD3");
+            Handler.parseInputDirectory(args[0]);
+            Tools.ls();
+            Tools.pwd();
+            System.out.println("-----------------------");
+            Tools.cd("/Users/kboughal/Desktop/javaModules/javaMD3/inputA.txt");
+            Tools.pwd();
+            Tools.ls();
+            System.out.println("-----------------------");
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
