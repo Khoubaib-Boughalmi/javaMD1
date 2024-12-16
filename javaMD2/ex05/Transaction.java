@@ -34,8 +34,8 @@ public class Transaction {
         if (sender == recipient) {
             throw new IllegalArgumentException("Sender and recipient cannot be the same");
         }
-        if (amount == 0) {
-            throw new IllegalArgumentException("Transaction amount cannot be zero");
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Transaction amount cannot be less or equal to zero");
         }
         double absoluteAmount = Math.abs(amount);
         try {
